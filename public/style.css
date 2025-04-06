@@ -303,6 +303,60 @@ main {
   background: #0056b3;
 }
 
+.delResource{
+    background-color: rgb(184, 122, 122);
+}
+.delResource:hover{
+    background-color: rgb(202, 62, 62);
+}
+.my-skill-card {
+    display: flex;
+    background: #f9f9f9;
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 800px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.my-skill-card button{
+    margin-bottom: 5px;
+}
+.card-left img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.card-right {
+    flex: 1;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+}
+
+.card-header .progress-label {
+    font-weight: bold;
+}
+.progress{
+    border: 1px solid rgb(103, 103, 140, 25%);
+}
+input[type="range"] {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
 footer {
     background-color: #333;
     color: white;

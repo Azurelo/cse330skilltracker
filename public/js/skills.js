@@ -36,7 +36,7 @@ function closeSkillModal() {
 
 // Add a new skill via modal
 async function addSkill(event) {
-    event.preventDefault(); // Stop form from reloading the page
+    event.preventDefault(); 
 
     const name = document.getElementById('skillName').value.trim();
     const category = document.getElementById('skillCategory').value.trim();
@@ -58,9 +58,26 @@ async function addSkill(event) {
 
     if (res.ok) {
         closeSkillModal();
-        fetchSkills(); // Reload skills on page
+        fetchSkills(); 
     } else {
         const data = await res.json();
+        alert(data.message || 'Error adding skill');
+    }
+}
+async function addToGoal(skillId) {
+    const res = await fetch('/goals/add-skill', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ skillId })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+        alert(`Added "${data.title}" to your skills!`);
+    } else {
         alert(data.message || 'Error adding skill');
     }
 }

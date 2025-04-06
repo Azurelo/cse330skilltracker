@@ -1,4 +1,3 @@
-// public/js/mySkills.js
 const token = localStorage.getItem('token');
 
 async function fetchUserSkills() {
@@ -12,30 +11,47 @@ async function fetchUserSkills() {
 
     skills.forEach(skill => {
         const card = document.createElement('div');
-        card.className = 'skill-card';
+        card.className = 'my-skill-card';
+
+        const icon = skill.skills[0]?.icon || '#';
+        const name = skill.title;
+        const progress = skill.progress ?? 0;
+        const resources = skill.resources ?? [];
+
         card.innerHTML = `
-            <img src="${skill.skills[0]?.icon || '#'}" alt="${skill.title}">
-            <p>${skill.title}</p>
-            <div class="progress"><div class="progress-bar" style="width: ${skill.progress}%;"></div></div>
-            <button onclick="updateSkillProgress('${skill._id}')">Update Progress</button>
-            <button onclick="deleteSkill('${skill._id}')">Remove Skill</button>
-            <div>
-                <strong>Resources:</strong>
-                <ul>${skill.resources.map(r => `<li>${r} <button onclick="deleteResource('${skill._id}', '${r}')">x</button></li>`).join('')}</ul>
+            <div class="card-left">
+                <img src="${icon}" alt="${name}">
+            </div>
+            <div class="card-right">
+                <div class="card-header">
+                    <h3>${name}</h3>
+                    <span class="progress-label">${progress}%</span>
+                </div>
+                <input type="range" min="0" max="100" value="${progress}" 
+                       onchange="updateSkillProgress('${skill._id}', this.value)">
+                <p><strong>Skill Details:</strong> Add a description or auto-generated summary here.</p>
+                <p><strong>Resources:</strong></p>
+                <ul>
+                    ${resources.map(r => `<li>${r} <button class="delResource" onclick="deleteResource('${skill._id}', '${r}')">x</button></li>`).join('')}
+                </ul>
                 <input type="text" placeholder="New resource URL" id="res-${skill._id}">
-                <button onclick="addResource('${skill._id}')">Add</button>
+                <button onclick="addResource('${skill._id}')">Add Resource</button>
+                <button onclick="deleteSkill('${skill._id}')">Remove Skill</button>
             </div>
         `;
+
         container.appendChild(card);
     });
 }
 
-async function updateSkillProgress(id) {
-    const progress = prompt('Enter progress (0-100):');
-    if (!progress) return;
+// Slider-style update
+async function updateSkillProgress(id, progress) {
     await fetch(`/goals/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
         body: JSON.stringify({ progress: parseInt(progress) })
     });
     fetchUserSkills();
@@ -54,7 +70,7 @@ async function addResource(goalId) {
     const url = input.value.trim();
     if (!url) return;
 
-    const res = await fetch('/goals', { headers: { Authorization: token }});
+    const res = await fetch('/goals', { headers: { Authorization: token } });
     const goals = await res.json();
     const goal = goals.find(g => g._id === goalId);
 
@@ -62,7 +78,10 @@ async function addResource(goalId) {
 
     await fetch(`/goals/${goalId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
         body: JSON.stringify({ resources: newResources })
     });
 
@@ -70,7 +89,7 @@ async function addResource(goalId) {
 }
 
 async function deleteResource(goalId, url) {
-    const res = await fetch('/goals', { headers: { Authorization: token }});
+    const res = await fetch('/goals', { headers: { Authorization: token } });
     const goals = await res.json();
     const goal = goals.find(g => g._id === goalId);
 
@@ -78,7 +97,10 @@ async function deleteResource(goalId, url) {
 
     await fetch(`/goals/${goalId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
         body: JSON.stringify({ resources: filtered })
     });
 

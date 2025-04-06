@@ -20,23 +20,10 @@
             <p>Welcome back user</p>
             <button>Resume Learning</button>
         </section>
-        <section class="skills">
-            <div class="skill-card">
-                <img src="https://cdn.pixabay.com/photo/2018/04/05/16/25/mikado-3293281_640.jpg" alt="Skill Image">
-                <p>Drawing</p>
-                <div class="progress"><div class="progress-bar" style="width: 50%;"></div></div>
-            </div>
-            <div class="skill-card">
-                <img src="https://cdn.pixabay.com/photo/2017/04/08/10/23/surfing-2212948_640.jpg" alt="Skill Image">
-                <p>Surfing</p>
-                <div class="progress"><div class="progress-bar" style="width: 70%;"></div></div>
-            </div>
-            <div class="skill-card">
-                <img src="https://cdn.pixabay.com/photo/2019/06/18/07/09/school-4281626_640.jpg" alt="Skill Image">
-                <p>Social Skills</p>
-                <div class="progress"><div class="progress-bar" style="width: 30%;"></div></div>
-            </div>
-        </section>
+        <section class="skills" id="recentSkillsContainer">
+           
+          </section>
+          
         <div class="actions">
             <button>Add new Skill</button>
             <a href="skills.html"><button>Skill List</button></a>
@@ -49,7 +36,7 @@
     <div id="addSkillModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Add New Skill</h2>
+            <h2>Create New Skill</h2>
             <form id="skillForm">
                 <input type="text" id="skillName" placeholder="Skill name" required>
                 <input type="text" id="skillCategory" placeholder="Skill category">
@@ -58,7 +45,8 @@
             </form>
         </div>
     </div>
-    
+    <script src="/js/dashboard.js"></script>
+
     <script src="/js/skills.js"></script>
 </body>
 </html>

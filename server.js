@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const skillsRoutes = require('./routes/skillsRoutes');
+const goalRoutes = require('./routes/goalRoutes');
+
+
 dotenv.config();
 
 const app = express();
@@ -22,9 +25,12 @@ app.use('/auth', authRoutes);
 app.use('/skills', skillsRoutes);
 app.get('/skills', (req, res) => res.sendFile(path.join(__dirname, 'views', 'skills.html')));
 app.get('/my-skills', (req, res) => res.sendFile(path.join(__dirname, 'views', 'my-skills.html')));
-
+app.use('/goals', goalRoutes);
 app.use('/skills', skillsRoutes);
-
+app.use((req, res) => {
+    res.status(404).send('Page not found');
+  });
+  
 const PORT = process.env.PORT || 5000;
 
 mongoose
