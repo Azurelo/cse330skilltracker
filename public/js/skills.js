@@ -1,0 +1,70 @@
+const token = localStorage.getItem('token');
+
+// Fetch and display skills
+async function fetchSkills() {
+    const res = await fetch('/skills/api');
+    const skills = await res.json();
+
+    const skillList = document.getElementById('skillList');
+    skillList.innerHTML = '';
+
+    skills.forEach(skill => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="skill-card">
+                <img src="${skill.icon}" alt="${skill.name}" />
+                <h3>${skill.name}</h3>
+                <p>${skill.category || ''}</p>
+                <button onclick="openSkillInfo('${skill._id}')">More Info</button>
+                <button onclick="addToGoal('${skill._id}')">Add Skill</button>
+            </div>
+        `;
+        skillList.appendChild(li);
+    });
+}
+
+
+// Open and close modal
+function openSkillModal() {
+    document.getElementById('skillModal').style.display = 'block';
+}
+function closeSkillModal() {
+    document.getElementById('skillModal').style.display = 'none';
+}
+
+// Add a new skill via modal
+async function addSkill(event) {
+    event.preventDefault();
+    const name = document.getElementById('skillName').value;
+    const category = document.getElementById('skillCategory').value;
+    const icon = document.getElementById('skillIcon').value;
+
+    const res = await fetch('/skills/api', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ name, category, icon })
+    });
+
+    if (res.ok) {
+        closeSkillModal();
+        fetchSkills();
+    } else {
+        alert('Skill already exists or an error occurred.');
+    }
+}
+
+document.getElementById('skillForm').addEventListener('submit', addSkill);
+
+// Close modal on outside click
+window.onclick = function(event) {
+    const modal = document.getElementById('skillModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Initial load
+fetchSkills();

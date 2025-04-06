@@ -1,58 +1,44 @@
+// controllers/goalController.js
 const Goal = require('../models/Goal');
+const Skill = require('../models/Skill');
 
 // Get all goals for logged-in user
 exports.getGoals = async (req, res) => {
     try {
-        const goals = await Goal.find({ user: req.user.id });
+        const goals = await Goal.find({ user: req.user.id }).populate('skills');
         res.json(goals);
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving goals' });
     }
 };
 
-// Create a new goal
-exports.createGoal = async (req, res) => {
+// Add a skill to user goals
+exports.addSkillToUser = async (req, res) => {
+    const { skillId } = req.body;
     try {
-        const { title, description, resources } = req.body;
-        const newGoal = new Goal({ 
-            user: req.user.id, 
-            title, 
-            description, 
-            resources: resources || [] 
+        const skill = await Skill.findById(skillId);
+        if (!skill) return res.status(404).json({ message: 'Skill not found' });
+
+        const existingGoal = await Goal.findOne({ user: req.user.id, title: skill.name });
+        if (existingGoal) return res.status(400).json({ message: 'Skill already added' });
+
+        const newGoal = new Goal({
+            user: req.user.id,
+            title: skill.name,
+            description: `Learning ${skill.name}`,
+            skills: [skill._id],
+            resources: [],
+            progress: 0
         });
 
         await newGoal.save();
         res.status(201).json(newGoal);
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating goal' });
+    } catch (err) {
+        res.status(500).json({ message: 'Error adding skill to user' });
     }
 };
 
-// Update a goal (title, description, progress, resources, or completion status)
-exports.updateGoal = async (req, res) => {
-    try {
-        const goal = await Goal.findById(req.params.id);
-        if (!goal || goal.user.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Unauthorized' });
-        }
-
-        goal.title = req.body.title || goal.title;
-        goal.description = req.body.description || goal.description;
-        goal.progress = req.body.progress !== undefined ? req.body.progress : goal.progress;
-        goal.completed = req.body.completed !== undefined ? req.body.completed : goal.completed;
-
-        if (req.body.resources) {
-            goal.resources = req.body.resources; // Replace resources array
-        }
-
-        await goal.save();
-        res.json(goal);
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating goal' });
-    }
-};
-
-// Delete a goal
+// Delete a skill/goal
 exports.deleteGoal = async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.id);
@@ -64,5 +50,24 @@ exports.deleteGoal = async (req, res) => {
         res.json({ message: 'Goal deleted' });
     } catch (error) {
         res.status(500).json({ message: 'Error deleting goal' });
+    }
+};
+
+// Update goal progress or resources
+exports.updateGoal = async (req, res) => {
+    try {
+        const goal = await Goal.findById(req.params.id);
+        if (!goal || goal.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        goal.progress = req.body.progress ?? goal.progress;
+        goal.completed = req.body.completed ?? goal.completed;
+        goal.resources = req.body.resources ?? goal.resources;
+
+        await goal.save();
+        res.json(goal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating goal' });
     }
 };

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/dashboard">Skill Tracker</a></li>
+            <li><a href="/my-skills">My Skills</a></li>
+            <li><a href="/skills">Discover</a></li> 
+            <li><a href="#" id="toggle-theme">🌓</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>All Skills</h1>
+        <button onclick="openSkillModal()">Create New Skill</button>
+        <ul id="skillList" class="skills"></ul>
+    </main>
+    <footer>
+        <p>&copy; 2025 Skill Tracker. Stay curious and always learn!</p>
+        <p>Justus Schoppmann </p>
+      </footer>
+
+    <div id="skillModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSkillModal()">&times;</span>
+            <h2>Add a Skill</h2>
+            <form id="skillForm">
+                <label for="skillName">Skill Name:</label>
+                <input type="text" id="skillName" required>
+                <label for="skillCategory">Category:</label>
+                <input type="text" id="skillCategory">
+                <label for="skillIcon">Icon URL:</label>
+                <input type="text" id="skillIcon">
+                <button type="submit">Add Skill</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/skills.js"></script>
+    <script src="js/themeToggle.js"></script>
+</body>
+</html>

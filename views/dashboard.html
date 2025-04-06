@@ -9,10 +9,10 @@
 <body>
     <nav>
         <ul>
-            <li><a href="#">Skill Tracker</a></li>
-            <li><a href="#">My Skills</a></li>
-            <li><a href="#">Discover</a></li>
-            <li class="settings"><a href="#">&#9881;</a></li>
+            <li><a href="/dashboard">Skill Tracker</a></li>
+            <li><a href="/my-skills">My Skills</a></li>
+            <li><a href="/skills">Discover</a></li>            
+            <li><a href="#" id="toggle-theme">🌓</a></li>
         </ul>
     </nav>
     <main>
@@ -22,31 +22,43 @@
         </section>
         <section class="skills">
             <div class="skill-card">
-                <img src="placeholder.png" alt="Skill Image">
-                <p>Skill Name</p>
+                <img src="https://cdn.pixabay.com/photo/2018/04/05/16/25/mikado-3293281_640.jpg" alt="Skill Image">
+                <p>Drawing</p>
                 <div class="progress"><div class="progress-bar" style="width: 50%;"></div></div>
             </div>
             <div class="skill-card">
-                <img src="placeholder.png" alt="Skill Image">
-                <p>Skill Name</p>
+                <img src="https://cdn.pixabay.com/photo/2017/04/08/10/23/surfing-2212948_640.jpg" alt="Skill Image">
+                <p>Surfing</p>
                 <div class="progress"><div class="progress-bar" style="width: 70%;"></div></div>
             </div>
             <div class="skill-card">
-                <img src="placeholder.png" alt="Skill Image">
-                <p>Skill Name</p>
+                <img src="https://cdn.pixabay.com/photo/2019/06/18/07/09/school-4281626_640.jpg" alt="Skill Image">
+                <p>Social Skills</p>
                 <div class="progress"><div class="progress-bar" style="width: 30%;"></div></div>
             </div>
         </section>
         <div class="actions">
             <button>Add new Skill</button>
-            <button>Skill List</button>
-        </div>
+            <a href="skills.html"><button>Skill List</button></a>
+        </div>        
     </main>
     <footer>
-        <p>Lorem ipsum dolor</p>
-        <p>Lorem ipsum dolor</p>
-        <p>Lorem ipsum dolor</p>
-        <p>Lorem ipsum dolor sit</p>
-    </footer>
+        <p>&copy; 2025 Skill Tracker. Stay curious and always learn!</p>
+        <p>Justus Schoppmann </p>
+      </footer>
+    <div id="addSkillModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Skill</h2>
+            <form id="skillForm">
+                <input type="text" id="skillName" placeholder="Skill name" required>
+                <input type="text" id="skillCategory" placeholder="Skill category">
+                <input type="text" id="skillIcon" placeholder="Icon URL">
+                <button type="submit">Add Skill</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/js/skills.js"></script>
 </body>
 </html>

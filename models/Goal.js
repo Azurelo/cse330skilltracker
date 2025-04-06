@@ -7,6 +7,7 @@ const GoalSchema = new mongoose.Schema({
     progress: { type: Number, default: 0 },
     resources: [String], 
     completed: { type: Boolean, default: false },
+    skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }] // 🔥 New field for skills
 });
 
 module.exports = mongoose.model('Goal', GoalSchema);

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
-
+const skillsRoutes = require('./routes/skillsRoutes');
 dotenv.config();
 
 const app = express();
@@ -19,6 +19,11 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', '
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/skills', skillsRoutes);
+app.get('/skills', (req, res) => res.sendFile(path.join(__dirname, 'views', 'skills.html')));
+app.get('/my-skills', (req, res) => res.sendFile(path.join(__dirname, 'views', 'my-skills.html')));
+
+app.use('/skills', skillsRoutes);
 
 const PORT = process.env.PORT || 5000;
 
