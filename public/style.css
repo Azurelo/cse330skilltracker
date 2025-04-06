@@ -185,23 +185,122 @@ main {
 .modal {
     display: none;
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: #1e1e2f; 
+    color: #ffffff; 
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    min-width: 60%;
+    max-width: 90%;
 }
 
 .modal-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.modal-content input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background: #2e2e40;
+    color: white;
+    font-size: 1rem;
+}
+
+
+
+.modal-content button[type="submit"] {
+    padding: 0.5rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.modal-content button[type="submit"]:hover {
+    background: #0056b3;
 }
 
 .close {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 14px;
+    font-size: 1.5rem;
+    font-weight: bold;
     cursor: pointer;
+    color: #fff;
+    transition: transform 0.2s ease;
+}
+
+.close:hover {
+    transform: scale(1.2);
+}
+
+
+/* Skill CArd */
+/* Reset list style */
+.skills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Skill card style */
+.skill-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 200px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skill-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+.skill-card button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.skill-card button:hover {
+  background: #0056b3;
 }
 
 footer {

@@ -11,12 +11,14 @@ async function fetchSkills() {
     skills.forEach(skill => {
         const li = document.createElement('li');
         li.innerHTML = `
+            <div class="skills">
             <div class="skill-card">
                 <img src="${skill.icon}" alt="${skill.name}" />
                 <h3>${skill.name}</h3>
                 <p>${skill.category || ''}</p>
                 <button onclick="openSkillInfo('${skill._id}')">More Info</button>
                 <button onclick="addToGoal('${skill._id}')">Add Skill</button>
+            </div>
             </div>
         `;
         skillList.appendChild(li);
@@ -34,10 +36,16 @@ function closeSkillModal() {
 
 // Add a new skill via modal
 async function addSkill(event) {
-    event.preventDefault();
-    const name = document.getElementById('skillName').value;
-    const category = document.getElementById('skillCategory').value;
-    const icon = document.getElementById('skillIcon').value;
+    event.preventDefault(); // Stop form from reloading the page
+
+    const name = document.getElementById('skillName').value.trim();
+    const category = document.getElementById('skillCategory').value.trim();
+    const icon = document.getElementById('skillIcon').value.trim();
+
+    if (!name || !icon) {
+        alert('Please fill in both name and icon URL!');
+        return;
+    }
 
     const res = await fetch('/skills/api', {
         method: 'POST',
@@ -45,16 +53,18 @@ async function addSkill(event) {
             'Content-Type': 'application/json',
             'Authorization': token
         },
-        body: JSON.stringify({ name, category, icon })
+        body: JSON.stringify({ name, category, icon }) // ✅ Include all 3!
     });
 
     if (res.ok) {
         closeSkillModal();
-        fetchSkills();
+        fetchSkills(); // Reload skills on page
     } else {
-        alert('Skill already exists or an error occurred.');
+        const data = await res.json();
+        alert(data.message || 'Error adding skill');
     }
 }
+
 
 document.getElementById('skillForm').addEventListener('submit', addSkill);
 
