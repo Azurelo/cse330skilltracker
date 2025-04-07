@@ -1,16 +1,31 @@
-const token = localStorage.getItem('token');
+const toke = window.token; 
 
+// Wire up the modal open button
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('create-skill-btn');
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (typeof window.openSkillModal === 'function') {
+        window.openSkillModal();
+      } else {
+        console.error('❌ openSkillModal not defined');
+      }
+    });
+  }
+});
+
+// Load the user's recent 3 skills
 async function loadRecentSkills() {
   try {
     const res = await fetch('/goals', {
-      headers: { Authorization: token }
+      headers: { Authorization: toke }
     });
 
     const goals = await res.json();
-
-    //Sort by time
-    const recent = goals.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
-
+    const recent = goals
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 3);
 
     const container = document.getElementById('recentSkillsContainer');
     container.innerHTML = '';
