@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof window.openSkillModal === 'function') {
         window.openSkillModal();
       } else {
-        console.error('❌ openSkillModal not defined');
+        console.error('openSkillModal not defined');
       }
     });
   }
@@ -50,5 +50,23 @@ async function loadRecentSkills() {
     console.error('Failed to load recent skills:', err);
   }
 }
+// Fetch and display the user’s name
+async function loadUsername() {
+  
 
+  try {
+    const res = await fetch('/auth/profile', {
+      headers: { Authorization: toke }
+    });
+    const user = await res.json();
+    console.log('👤 User profile:', user);
+    const welcome = document.querySelector('.welcome p');
+    if (user.username && welcome) {
+      welcome.textContent = `Welcome back ${user.username}`;
+    }
+  } catch (err) {
+    console.error('Error loading user name:', err);
+  }
+}
 loadRecentSkills();
+loadUsername();

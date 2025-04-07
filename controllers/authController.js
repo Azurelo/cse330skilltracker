@@ -15,8 +15,16 @@ exports.register = async (req, res) => {
         res.status(400).json({ message: 'Error during registration', error });
     }
 };
-
-// Login Controller (unchanged)
+exports.getUserProfile = async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id).select('-password');
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to fetch user' });
+    }
+  };
+  
+// Login Controller )
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
