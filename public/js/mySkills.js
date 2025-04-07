@@ -32,7 +32,7 @@ async function fetchUserSkills() {
                 <p><strong>Skill Details:</strong> Add a description or auto-generated summary here.</p>
                 <p><strong>Resources:</strong></p>
                 <ul>
-                    ${resources.map(r => `<li>${r} <button class="delResource" onclick="deleteResource('${skill._id}', '${r}')">x</button></li>`).join('')}
+                    ${resources.map(r => `<li>${r} <button class="delResource" onclick="deleteResource('${skill._id}', '${r}')">Remove Resource</button></li>`).join('')}
                 </ul>
                 <input type="text" placeholder="New resource URL" id="res-${skill._id}">
                 <button onclick="addResource('${skill._id}')">Add Resource</button>
