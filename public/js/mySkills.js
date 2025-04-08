@@ -29,7 +29,7 @@ async function fetchUserSkills() {
                 </div>
                 <input type="range" min="0" max="100" value="${progress}" 
                        onchange="updateSkillProgress('${skill._id}', this.value)">
-                <p><strong>Skill Details:</strong> Add a description or auto-generated summary here.</p>
+                <p><strong>Skill Details:</strong> ${skill.skills[0]?.summary || 'No summary available.'}</p>
                 <p><strong>Resources:</strong></p>
                 <ul>
                     ${resources.map(r => `<li>${r} <button class="delResource" onclick="deleteResource('${skill._id}', '${r}')">Remove Resource</button></li>`).join('')}

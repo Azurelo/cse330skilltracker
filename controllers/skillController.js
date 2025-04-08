@@ -1,31 +1,59 @@
 const Skill = require('../models/Skill');
+const axios = require('axios');
+require('dotenv').config();
+
+// Get summary from OpenAI (single attempt only)
+async function fetchSummary(name) {
+  const prompt = `Give me a short paragraph summary (2-3 sentences) explaining what the skill "${name}" is and why it's useful.`;
+
+  const response = await axios.post(
+    'https://api.openai.com/v1/chat/completions',
+    {
+      model: 'gpt-3.5-turbo-0125', // more stable model
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 60,
+      temperature: 0.7
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return response.data.choices[0].message.content;
+}
 
 // Get all skills
 exports.getSkills = async (req, res) => {
-    try {
-        const skills = await Skill.find();
-        res.json(skills);
-    } catch (error) {
-        res.status(500).json({ message: 'Error retrieving skills' });
-    }
+  try {
+    const skills = await Skill.find();
+    res.json(skills);
+  } catch (error) {
+    console.error('❌ Failed to get skills:', error);
+    res.status(500).json({ message: 'Error retrieving skills' });
+  }
 };
 
-// Create a skill
+// Add a new skill (no retry)
 exports.addSkill = async (req, res) => {
-    try {
-        const { name, category, icon } = req.body;
+  try {
+    const { name, category, icon } = req.body;
 
-        // Optional: prevent duplicates
-        const existing = await Skill.findOne({ name });
-        if (existing) {
-            return res.status(400).json({ message: 'Skill already exists' });
-        }
+    // Prevent duplicates
+    const exists = await Skill.findOne({ name });
+    if (exists) return res.status(400).json({ message: 'Skill already exists' });
 
-        const newSkill = new Skill({ name, category, icon });
-        await newSkill.save();
+    // Generate AI summary (single request only)
+    const summary = await fetchSummary(name);
 
-        res.status(201).json(newSkill);
-    } catch (error) {
-        res.status(500).json({ message: 'Error adding skill' });
-    }
+    const skill = new Skill({ name, category, icon, summary });
+    await skill.save();
+
+    res.status(201).json(skill);
+  } catch (err) {
+    console.error('❌ Error adding skill:', err.response?.data || err.message);
+    res.status(500).json({ message: 'Error adding skill', error: err.message });
+  }
 };
