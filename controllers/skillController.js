@@ -9,7 +9,7 @@ async function fetchSummary(name) {
   const response = await axios.post(
     'https://api.openai.com/v1/chat/completions',
     {
-      model: 'gpt-3.5-turbo-0125', // more stable model
+      model: 'gpt-3.5-turbo', 
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 60,
       temperature: 0.7

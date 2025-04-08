@@ -70,3 +70,27 @@ async function loadUsername() {
 }
 loadRecentSkills();
 loadUsername();
+
+document.querySelector('.welcome button').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/goals', {
+      headers: { Authorization: localStorage.getItem('token') }
+    });
+
+    const goals = await res.json();
+
+    const recent = goals.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+
+    const skillName = recent?.skills?.[0]?.name || recent?.title;
+
+    if (skillName) {
+      const query = encodeURIComponent(skillName);
+      window.open(`https://www.google.com/search?q=${query}`, '_blank');
+    } else {
+      alert('No recent skills found to search for.');
+    }
+  } catch (err) {
+    console.error('Failed to fetch recent skill for search:', err);
+    alert('Could not resume learning. Try again later.');
+  }
+});
